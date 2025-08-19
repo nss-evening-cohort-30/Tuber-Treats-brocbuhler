@@ -1,8 +1,7 @@
 namespace TuberTreats.Models;
 
-public class TuberDriver
+public class ToppingDTO
 {
   int Id { get; set; }
   string Name { get; set; }
-  string TuberDelivers { get; set; }
 }

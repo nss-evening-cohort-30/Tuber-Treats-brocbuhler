@@ -1,6 +1,6 @@
 namespace TuberTreats.Models;
 
-public class Customer
+public class CustomerDTO
 {
   int Id { get; set; }
   string Name { get; set; }

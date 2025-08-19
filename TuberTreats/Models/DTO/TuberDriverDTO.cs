@@ -1,6 +1,6 @@
 namespace TuberTreats.Models;
 
-public class TuberDriver
+public class TuberDriverDTO
 {
   int Id { get; set; }
   string Name { get; set; }
