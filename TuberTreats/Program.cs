@@ -1,3 +1,5 @@
+using TuberTreats.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -20,7 +22,50 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+//data
+List<Customer> customers = new List<Customer>
+{
+    new Customer
+    {
+        Id = ,
+        Name = ,
+        Address = ,
+        TuberOrders - ,
+    },
+    {
+        Id = ,
+        Name = ,
+        Address = ,
+        TuberOrders - ,
+    },
+    {
+        Id = ,
+        Name = ,
+        Address = ,
+        TuberOrders - ,
+    },
+    {
+        Id = ,
+        Name = ,
+        Address = ,
+        TuberOrders - ,
+    },
+    {
+        Id = ,
+        Name = ,
+        Address = ,
+        TuberOrders - ,
+    }
+};
+List<Topping> toppings = new List<Topping> { };
+List<TuberDriver> tuberDrivers = new List<TuberDriver> { };
+List<TuberOrder> tuberOrders = new List<TuberOrder> { };
+List<TuberTopping> tuberToppings = new List<TuberTopping> { };
+//
 //add endpoints here
+//Tuber Orders
+
+//
 
 app.Run();
 //don't touch or move this!
