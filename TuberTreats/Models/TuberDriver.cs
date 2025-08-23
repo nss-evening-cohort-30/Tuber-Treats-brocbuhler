@@ -2,7 +2,7 @@ namespace TuberTreats.Models;
 
 public class TuberDriver
 {
-  int Id { get; set; }
-  string Name { get; set; }
-  string TuberDelivers { get; set; }
+  public int Id { get; set; }
+  public string Name { get; set; }
+  public string TuberDeliveries { get; set; }
 }

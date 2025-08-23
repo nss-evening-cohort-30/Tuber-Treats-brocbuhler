@@ -2,8 +2,8 @@ namespace TuberTreats.Models;
 
 public class CustomerDTO
 {
-  int Id { get; set; }
-  string Name { get; set; }
-  string Address { get; set; }
-  TuberOrder TuberOrders { get; set; }
+  public int Id { get; set; }
+  public string Name { get; set; }
+  public string Address { get; set; }
+  public TuberOrder TuberOrders { get; set; }
 }
