@@ -2,10 +2,10 @@ namespace TuberTreats.Models;
 
 public class TuberOrder
 {
-  int Id { get; set; }
-  DateTime OrderPlacedOnDate { get; set; }
-  int CustomerId { get; set; }
-  int TuberDriverId { get; set; }
-  DateTime DeliveredOnDate { get; set; }
-  Topping Toppings { get; set; }
+  public int Id { get; set; }
+  public DateTime OrderPlacedOnDate { get; set; }
+  public int CustomerId { get; set; }
+  public int TuberDriverId { get; set; }
+  public DateTime DeliveredOnDate { get; set; }
+  public List<Topping> Toppings { get; set; }
 }
