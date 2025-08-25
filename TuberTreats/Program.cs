@@ -112,6 +112,11 @@ List<TuberOrder> tuberOrders = new List<TuberOrder>
         DeliveredOnDate = new DateTime(2004, 12, 1),
         CustomerId = 1,
         TuberDriverId = 1,
+        Toppings = new List<Topping>
+        {
+            toppings.First(t => t.Id == 1),  
+            toppings.First(t => t.Id == 2)   
+        }
     },
     new TuberOrder()
     {
@@ -120,6 +125,11 @@ List<TuberOrder> tuberOrders = new List<TuberOrder>
         DeliveredOnDate = new DateTime(2004, 12, 1),
         CustomerId = 3,
         TuberDriverId = 2,
+        Toppings = new List<Topping>
+        {
+            toppings.First(t => t.Id == 3), 
+            toppings.First(t => t.Id == 4)   
+        }
     },
     new TuberOrder()
     {
@@ -128,22 +138,29 @@ List<TuberOrder> tuberOrders = new List<TuberOrder>
         DeliveredOnDate = new DateTime(2004, 12, 1),
         CustomerId = 4,
         TuberDriverId = 3,
+        Toppings = new List<Topping>
+        {
+            toppings.First(t => t.Id == 5),  
+            toppings.First(t => t.Id == 1)  
+        }
     },
 };
+
 List<TuberTopping> tuberToppings = new List<TuberTopping> { };
 //
 
 //add endpoints here
 //Tuber Orders
 app.MapGet("/tuberorders", () =>
-{ //I don't really understand the toppings field
+{
     List<TuberOrderDTO> tuberOrder = tuberOrders.Select(t => new TuberOrderDTO
     {
         Id = t.Id,
         OrderPlacedOnDate = t.OrderPlacedOnDate,
         DeliveredOnDate = t.DeliveredOnDate,
         CustomerId = t.CustomerId,
-        TuberDriverId = t.TuberDriverId
+        TuberDriverId = t.TuberDriverId,
+        Toppings = t.Toppings.Select(st => st.Name).ToList()
     }).ToList();
     return Results.Ok(tuberOrder);
 });
@@ -173,7 +190,8 @@ app.MapGet("/tuberorder/{id}", (int id) =>
         {
             Id = orderDriver.Id,
             Name = orderDriver.Name,
-        }
+        },
+        Toppings = tuberOrder.Toppings.Select(st => st.Name).ToList()
     });
 });
 app.MapPost("/tuberorders", (TuberOrder tuberOrder) =>
@@ -202,7 +220,8 @@ app.MapPost("/tuberorders", (TuberOrder tuberOrder) =>
         {
             Id = tuberDriver.Id,
             Name = tuberDriver.Name
-        }
+        },
+        Toppings = tuberOrder.Toppings.Select(st => st.Name).ToList()
     });
 });
 app.MapPut("/tuberorders/{id}", (int id, int tuberDriverId) =>
@@ -213,14 +232,14 @@ app.MapPut("/tuberorders/{id}", (int id, int tuberDriverId) =>
         return Results.NotFound();
     }
     tuberOrder.TuberDriverId = tuberDriverId;
-    tuberOrders.Add(tuberOrder); // needs to replace
     return Results.Created($"tuberorders/{tuberOrder.Id}", new TuberOrderDTO
     {
         Id = tuberOrder.Id,
         CustomerId = tuberOrder.CustomerId,
         TuberDriverId = tuberOrder.TuberDriverId,
         DeliveredOnDate = tuberOrder.DeliveredOnDate,
-        OrderPlacedOnDate = tuberOrder.OrderPlacedOnDate
+        OrderPlacedOnDate = tuberOrder.OrderPlacedOnDate,
+        Toppings = tuberOrder.Toppings.Select(st => st.Name).ToList()
     });
 });
 app.MapPost("/tuberorders/{id}/complete", (int id) =>
@@ -231,14 +250,14 @@ app.MapPost("/tuberorders/{id}/complete", (int id) =>
         return Results.NotFound();
     }
     tuberOrder.DeliveredOnDate = DateTime.Now;
-    tuberOrders.Add(tuberOrder); // needs to replace
     return Results.Created($"tuberorders/{tuberOrder.Id}/complete", new TuberOrderDTO
     {
         Id = tuberOrder.Id,
         CustomerId = tuberOrder.CustomerId,
         TuberDriverId = tuberOrder.TuberDriverId,
         DeliveredOnDate = tuberOrder.DeliveredOnDate,
-        OrderPlacedOnDate = tuberOrder.OrderPlacedOnDate
+        OrderPlacedOnDate = tuberOrder.OrderPlacedOnDate,
+        Toppings = tuberOrder.Toppings.Select(st => st.Name).ToList()
     });
 });
 //
@@ -299,7 +318,6 @@ app.MapPatch("/tubertoppings/{id}", (int id, int toppingId) =>
         return Results.NotFound();
     }
     tuberTopping.ToppingId = toppingId;
-    tuberToppings.Add(tuberTopping); // needs to replace
     return Results.Created($"tubertoppings/{tuberTopping.Id}", new TuberToppingDTO
     {
         Id = tuberTopping.Id,
@@ -338,7 +356,8 @@ app.MapGet("/customers/{id}", (int id) =>
             Id = tuberOrder.Id,
             DeliveredOnDate = tuberOrder.DeliveredOnDate,
             OrderPlacedOnDate = tuberOrder.OrderPlacedOnDate,
-            TuberDriverId = tuberOrder.TuberDriverId
+            TuberDriverId = tuberOrder.TuberDriverId,
+            Toppings = tuberOrder.Toppings.Select(st => st.Name).ToList()
         },
     });
 });
@@ -360,7 +379,7 @@ app.MapDelete("/customer/{id}", (int id) =>
     {
         return Results.NotFound();
     }
-    customers.Remove(customer); // may not work properly I think I need to affect the customers list
+    customers.Remove(customer);
     return Results.Ok();
 });
 //
@@ -392,7 +411,8 @@ app.MapGet("/tuberdrivers/{id}", (int id) =>
             Id = tuberOrder.Id,
             OrderPlacedOnDate = tuberOrder.OrderPlacedOnDate,
             DeliveredOnDate = tuberOrder.DeliveredOnDate,
-            CustomerId = tuberOrder.CustomerId
+            CustomerId = tuberOrder.CustomerId,
+            Toppings = tuberOrder.Toppings.Select(st => st.Name).ToList()
         },
     });
 });
