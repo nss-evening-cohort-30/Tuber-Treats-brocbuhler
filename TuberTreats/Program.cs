@@ -114,8 +114,8 @@ List<TuberOrder> tuberOrders = new List<TuberOrder>
         TuberDriverId = 1,
         Toppings = new List<Topping>
         {
-            toppings.First(t => t.Id == 1),  // Pepperoni
-            toppings.First(t => t.Id == 2)   // Onion
+            toppings.First(t => t.Id == 1),  
+            toppings.First(t => t.Id == 2)   
         }
     },
     new TuberOrder()
@@ -127,8 +127,8 @@ List<TuberOrder> tuberOrders = new List<TuberOrder>
         TuberDriverId = 2,
         Toppings = new List<Topping>
         {
-            toppings.First(t => t.Id == 3),  // Mushroom
-            toppings.First(t => t.Id == 4)   // Garlic
+            toppings.First(t => t.Id == 3), 
+            toppings.First(t => t.Id == 4)   
         }
     },
     new TuberOrder()
@@ -140,8 +140,8 @@ List<TuberOrder> tuberOrders = new List<TuberOrder>
         TuberDriverId = 3,
         Toppings = new List<Topping>
         {
-            toppings.First(t => t.Id == 5),  // Sausage
-            toppings.First(t => t.Id == 1)   // Pepperoni again
+            toppings.First(t => t.Id == 5),  
+            toppings.First(t => t.Id == 1)  
         }
     },
 };
@@ -152,7 +152,7 @@ List<TuberTopping> tuberToppings = new List<TuberTopping> { };
 //add endpoints here
 //Tuber Orders
 app.MapGet("/tuberorders", () =>
-{ //I don't really understand the toppings field
+{
     List<TuberOrderDTO> tuberOrder = tuberOrders.Select(t => new TuberOrderDTO
     {
         Id = t.Id,
@@ -232,7 +232,6 @@ app.MapPut("/tuberorders/{id}", (int id, int tuberDriverId) =>
         return Results.NotFound();
     }
     tuberOrder.TuberDriverId = tuberDriverId;
-    tuberOrders.Add(tuberOrder); // needs to replace
     return Results.Created($"tuberorders/{tuberOrder.Id}", new TuberOrderDTO
     {
         Id = tuberOrder.Id,
@@ -251,7 +250,6 @@ app.MapPost("/tuberorders/{id}/complete", (int id) =>
         return Results.NotFound();
     }
     tuberOrder.DeliveredOnDate = DateTime.Now;
-    tuberOrders.Add(tuberOrder); // needs to replace
     return Results.Created($"tuberorders/{tuberOrder.Id}/complete", new TuberOrderDTO
     {
         Id = tuberOrder.Id,
@@ -320,7 +318,6 @@ app.MapPatch("/tubertoppings/{id}", (int id, int toppingId) =>
         return Results.NotFound();
     }
     tuberTopping.ToppingId = toppingId;
-    tuberToppings.Add(tuberTopping); // needs to replace
     return Results.Created($"tubertoppings/{tuberTopping.Id}", new TuberToppingDTO
     {
         Id = tuberTopping.Id,
@@ -382,7 +379,7 @@ app.MapDelete("/customer/{id}", (int id) =>
     {
         return Results.NotFound();
     }
-    customers.Remove(customer); // may not work properly I think I need to affect the customers list
+    customers.Remove(customer);
     return Results.Ok();
 });
 //
