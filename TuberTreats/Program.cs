@@ -205,17 +205,41 @@ app.MapPost("/tuberorders", (TuberOrder tuberOrder) =>
         }
     });
 });
-app.MapPut("/tuberorders/{id}", (TuberDriver tuberDriver) =>
+app.MapPut("/tuberorders/{id}", (int id, int tuberDriverId) =>
 {
-    // TuberOrder tuberOrder = tuberOrders.
-    // return Results.Created($"/tuberorders/{tuberid}", new TuberDriverDTO
-    // {
-    //     Id = tuber
-    // });
+    TuberOrder tuberOrder = tuberOrders.FirstOrDefault(st => st.Id == id);
+    if (tuberOrder == null)
+    {
+        return Results.NotFound();
+    }
+    tuberOrder.TuberDriverId = tuberDriverId;
+    tuberOrders.Add(tuberOrder); // needs to replace
+    return Results.Created($"tuberorders/{tuberOrder.Id}", new TuberOrderDTO
+    {
+        Id = tuberOrder.Id,
+        CustomerId = tuberOrder.CustomerId,
+        TuberDriverId = tuberOrder.TuberDriverId,
+        DeliveredOnDate = tuberOrder.DeliveredOnDate,
+        OrderPlacedOnDate = tuberOrder.OrderPlacedOnDate
+    });
 });
-app.MapPost("/tuberorders/{id}/complete", () =>
+app.MapPost("/tuberorders/{id}/complete", (int id) =>
 {
-
+    TuberOrder tuberOrder = tuberOrders.FirstOrDefault(st => st.Id == id);
+    if (tuberOrder == null)
+    {
+        return Results.NotFound();
+    }
+    tuberOrder.DeliveredOnDate = DateTime.Now;
+    tuberOrders.Add(tuberOrder); // needs to replace
+    return Results.Created($"tuberorders/{tuberOrder.Id}/complete", new TuberOrderDTO
+    {
+        Id = tuberOrder.Id,
+        CustomerId = tuberOrder.CustomerId,
+        TuberDriverId = tuberOrder.TuberDriverId,
+        DeliveredOnDate = tuberOrder.DeliveredOnDate,
+        OrderPlacedOnDate = tuberOrder.OrderPlacedOnDate
+    });
 });
 //
 
@@ -270,6 +294,10 @@ app.MapPost("/tubertoppings", (TuberTopping tuberTopping) =>
 app.MapPatch("/tubertoppings/{id}", (int id, int toppingId) =>
 {
     TuberTopping tuberTopping = tuberToppings.FirstOrDefault(t => t.Id == id);
+    if (tuberTopping == null)
+    {
+        return Results.NotFound();
+    }
     tuberTopping.ToppingId = toppingId;
     tuberToppings.Add(tuberTopping); // needs to replace
     return Results.Created($"tubertoppings/{tuberTopping.Id}", new TuberToppingDTO
