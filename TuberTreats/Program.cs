@@ -249,15 +249,36 @@ app.MapGet("/toppings/{id}", (int id) =>
 //tubertoppings
 app.MapGet("/tubertoppings", () =>
 {
-
+    List<TuberToppingDTO> tuberTopping = tuberToppings.Select(t => new TuberToppingDTO
+    {
+        Id = t.Id,
+        TuberOrderId = t.TuberOrderId,
+        ToppingId = t.ToppingId
+    }).ToList();
+    return Results.Ok(tuberTopping);
 });
-app.MapPost("/tubertoppings", () =>
+app.MapPost("/tubertoppings", (TuberTopping tuberTopping) =>
 {
-
+    tuberTopping.Id = tuberOrders.Max(st => st.Id) + 1;
+    tuberToppings.Add(tuberTopping);
+    return Results.Created($"/tubertoppings/{tuberTopping.Id}", new TuberToppingDTO
+    {
+        Id = tuberTopping.Id,
+        TuberOrderId = tuberTopping.TuberOrderId,
+        ToppingId = tuberTopping.ToppingId
+    });
 });
-app.MapDelete("/tubertoppings", () =>
+app.MapPatch("/tubertoppings/{id}", (int id, int toppingId) =>
 {
-
+    TuberTopping tuberTopping = tuberToppings.FirstOrDefault(t => t.Id == id);
+    tuberTopping.ToppingId = toppingId;
+    tuberToppings.Add(tuberTopping);
+    return Results.Created($"tubertoppings/{tuberTopping.Id}", new TuberToppingDTO
+    {
+        Id = tuberTopping.Id,
+        TuberOrderId = tuberTopping.TuberOrderId,
+        ToppingId = tuberTopping.ToppingId
+    });
 });
 //
 
@@ -307,15 +328,27 @@ app.MapDelete("/customer/{id}", (int id) =>
 //tuberdrivers
 app.MapGet("/tuberdrivers", () =>
 {
-
+    List<TuberDriverDTO> tuberDriver = tuberDrivers.Select(t => new TuberDriverDTO
+        {
+            Id = t.Id,
+            Name = t.Name,
+        }).ToList();
+    return Results.Ok(tuberDriver);
 });
-// app.MapGet("/tuberdrivers/{id}", (int id) =>
-// {
-
-// });'
-//by tuber delivery somehow
-//
-
+app.MapGet("/tuberdrivers/{id}", (int id) =>
+{
+    TuberDriver tuberDriver = tuberDrivers.FirstOrDefault(st => st.Id == id);
+    if (tuberDriver == null)
+    {
+        return Results.NotFound();
+    }
+    return Results.Ok(new TuberDriverDTO
+    {
+        Id = tuberDriver.Id,
+        Name = tuberDriver.Name
+        //show delivery
+    });
+});
 //
 
 app.Run();
